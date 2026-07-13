@@ -66,6 +66,14 @@ main { min-height: 100vh; overflow: hidden; }
 .upload-icon { width: 42px; height: 42px; margin-bottom: 3px; display: grid; place-items: center; border-radius: 13px; background: var(--soft-green); color: var(--accent); font-size: 24px; font-weight: 700; }
 .selected-file { width: 100%; padding: 15px; display: grid; grid-template-columns: 82px 1fr auto; gap: 14px; align-items: center; }
 .selected-file img { width: 82px; height: 82px; object-fit: cover; border-radius: 13px; background: #edf0eb; }
+.multi-file-notice { margin-top: 13px; padding: 19px 20px; border: 1px solid #9db9a8; border-radius: 15px; background: var(--soft-green); display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: center; }
+.multi-file-notice > div:first-child > span { color: var(--accent); font-size: 11px; font-weight: 850; }
+.multi-file-notice h3 { margin: 6px 0 5px; font-size: 15px; line-height: 1.45; letter-spacing: -.025em; }
+.multi-file-notice p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.55; }
+.multi-file-actions { min-width: 164px; display: grid; gap: 7px; }
+.multi-file-actions a, .multi-file-actions button { min-height: 39px; padding: 9px 11px; border-radius: 10px; text-align: center; font-size: 11px; font-weight: 800; cursor: pointer; }
+.multi-file-actions a { background: var(--accent); color: white; text-decoration: none; }
+.multi-file-actions button { border: 1px solid #b7c9bd; background: white; color: var(--ink); }
 .file-copy { min-width: 0; display: flex; flex-direction: column; gap: 5px; }
 .file-copy strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; }
 .file-copy span { color: var(--muted); font-size: 13px; }
@@ -233,6 +241,8 @@ footer strong { color: var(--ink); font-size: 15px; }
   .selected-file { grid-template-columns: 66px 1fr; }
   .selected-file img { width: 66px; height: 66px; }
   .selected-file .secondary-button { grid-column: 1 / -1; width: 100%; }
+  .multi-file-notice { padding: 18px; grid-template-columns: 1fr; gap: 15px; }
+  .multi-file-actions { width: 100%; }
   .trust-section { margin: 56px auto; grid-template-columns: 1fr; gap: 0; }
   .role-switch-section { margin-top: 30px; padding: 23px 21px; align-items: flex-start; flex-direction: column; gap: 18px; }
   .role-switch-section > a { width: 100%; text-align: center; }

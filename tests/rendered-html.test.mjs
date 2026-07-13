@@ -27,6 +27,7 @@ test("renders the Korean image compression tool", async () => {
   assert.match(html, /목표 용량/);
   assert.match(html, /사진은 서버로 전송되지 않습니다/);
   assert.match(html, /type="file"/);
+  assert.match(html, /multiple/);
   assert.match(html, /href="\/batch-compress"/);
   assert.match(html, /여러 사진 일괄 압축/);
   assert.match(html, /파일핏 도구 메뉴/);
@@ -70,6 +71,9 @@ test("keeps the MVP client-side and limits accepted formats", async () => {
   assert.match(source, /image\/png/);
   assert.match(source, /image\/webp/);
   assert.match(source, /hasTransparentPixels/);
+  assert.match(source, /files\.length > 1/);
+  assert.match(source, /일괄 압축으로 이동/);
+  assert.match(source, /첫 번째 사진만 사용/);
   assert.match(source, /file\.type === "image\/png" && !pngHasTransparency \? "image\/jpeg"/);
   assert.doesNotMatch(source, /fetch\(|XMLHttpRequest|FormData/);
 });

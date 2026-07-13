@@ -191,6 +191,7 @@ export function ImageCompressor() {
   const [customTarget, setCustomTarget] = useState("500");
   const [isCustom, setIsCustom] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [multiFileNotice, setMultiFileNotice] = useState<{ count: number; first: File } | null>(null);
   const [status, setStatus] = useState<"idle" | "working" | "done" | "error">("idle");
   const [message, setMessage] = useState("");
   const [result, setResult] = useState<ReadyResult | null>(null);
@@ -215,6 +216,7 @@ export function ImageCompressor() {
 
   const selectFile = (selected?: File) => {
     if (!selected) return;
+    setMultiFileNotice(null);
     if (!ACCEPTED_TYPES.includes(selected.type)) {
       setStatus("error");
       setMessage("JPG, PNG, WEBP 사진만 선택할 수 있어요.");
@@ -235,15 +237,26 @@ export function ImageCompressor() {
     setMessage("");
   };
 
+  const handleFiles = (files?: FileList | null) => {
+    if (!files?.length) return;
+    if (files.length > 1) {
+      setMultiFileNotice({ count: files.length, first: files[0] });
+      setStatus("idle");
+      setMessage("");
+      return;
+    }
+    selectFile(files[0]);
+  };
+
   const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
-    selectFile(event.target.files?.[0]);
+    handleFiles(event.target.files);
     event.target.value = "";
   };
 
   const handleDrop = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     setIsDragging(false);
-    selectFile(event.dataTransfer.files?.[0]);
+    handleFiles(event.dataTransfer.files);
   };
 
   const choosePreset = (value: number) => {
@@ -330,7 +343,7 @@ export function ImageCompressor() {
           onDragLeave={() => setIsDragging(false)}
           onDrop={handleDrop}
         >
-          <input ref={inputRef} type="file" accept="image/jpeg,image/png,image/webp" onChange={handleInput} hidden />
+          <input ref={inputRef} type="file" multiple accept="image/jpeg,image/png,image/webp" onChange={handleInput} hidden />
           {file && originalUrl ? (
             <div className="selected-file">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -346,6 +359,20 @@ export function ImageCompressor() {
             </button>
           )}
         </div>
+
+        {multiFileNotice && (
+          <section className="multi-file-notice" role="alert" aria-labelledby="multi-file-title">
+            <div>
+              <span>{multiFileNotice.count}장의 사진을 선택했어요</span>
+              <h3 id="multi-file-title">여러 장은 일괄 압축에서 더 편하게 처리할 수 있어요.</h3>
+              <p>사진마다 같은 목표 용량을 적용하고 결과를 ZIP 파일 하나로 저장합니다.</p>
+            </div>
+            <div className="multi-file-actions">
+              <a href="/batch-compress">일괄 압축으로 이동 <span aria-hidden="true">→</span></a>
+              <button type="button" onClick={() => selectFile(multiFileNotice.first)}>첫 번째 사진만 사용</button>
+            </div>
+          </section>
+        )}
 
         <div className="divider" />
 
