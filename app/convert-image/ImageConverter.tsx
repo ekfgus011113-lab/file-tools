@@ -298,6 +298,15 @@ export function ImageConverter() {
         <article><span aria-hidden="true">◇</span><h3>사진이 밖으로 나가지 않아요</h3><p>업로드 없이 현재 기기의 브라우저에서 처리합니다.</p></article>
       </section>
 
+      <section className="article-link-section" aria-labelledby="format-guide-title">
+        <div>
+          <span className="section-kicker">사진 형식 가이드</span>
+          <h2 id="format-guide-title">PNG와 JPG, 어떤 형식을 선택해야 할까요?</h2>
+          <p>사진·화면 캡처·투명 배경에 맞는 형식을 비교하고 변환 전에 확인하세요.</p>
+        </div>
+        <a href="/guide/png-jpg-difference">PNG와 JPG 차이 보기 <span aria-hidden="true">→</span></a>
+      </section>
+
       <footer><strong>파일핏</strong><span>사진은 서버에 저장하거나 전송하지 않습니다.</span></footer>
     </main>
   );
