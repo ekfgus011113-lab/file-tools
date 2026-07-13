@@ -427,6 +427,15 @@ export function ImageCompressor() {
         <a href="/guide/photo-500kb">500KB 사진 압축 방법 보기 <span aria-hidden="true">→</span></a>
       </section>
 
+      <section className="more-tools-section" aria-labelledby="more-tools-title">
+        <div>
+          <span className="eyebrow">파일핏 도구</span>
+          <h2 id="more-tools-title">사진 크기도 원하는 픽셀로 바꿔보세요.</h2>
+          <p>가로·세로 비율을 유지하거나 필요한 크기를 직접 입력할 수 있습니다.</p>
+        </div>
+        <a href="/resize-image"><span aria-hidden="true">↔</span><strong>사진 가로·세로 크기 변경</strong><small>픽셀 크기 조절하기 →</small></a>
+      </section>
+
       <footer><strong>파일핏</strong><span>사진은 서버에 저장하거나 전송하지 않습니다.</span></footer>
     </main>
   );

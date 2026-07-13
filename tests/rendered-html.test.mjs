@@ -44,6 +44,7 @@ test("publishes search engine discovery routes", async () => {
   const sitemap = await sitemapResponse.text();
   assert.match(sitemap, /<loc>https:\/\/filefit\.kr<\/loc>/i);
   assert.match(sitemap, /<loc>https:\/\/filefit\.kr\/guide\/photo-500kb<\/loc>/i);
+  assert.match(sitemap, /<loc>https:\/\/filefit\.kr\/resize-image<\/loc>/i);
 });
 
 test("publishes the 500KB photo guide", async () => {
@@ -65,5 +66,23 @@ test("keeps the MVP client-side and limits accepted formats", async () => {
   assert.match(source, /image\/webp/);
   assert.match(source, /hasTransparentPixels/);
   assert.match(source, /file\.type === "image\/png" && !pngHasTransparency \? "image\/jpeg"/);
+  assert.doesNotMatch(source, /fetch\(|XMLHttpRequest|FormData/);
+});
+
+test("publishes the client-side image resizer", async () => {
+  const response = await render("/resize-image");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /사진 크기 변경 - 가로 세로 픽셀 조절 \| 파일핏/);
+  assert.match(html, /사진 가로·세로/);
+  assert.match(html, /비율 유지/);
+  assert.match(html, /type="file"/);
+
+  const source = await readFile(new URL("../app/resize-image/ImageResizer.tsx", import.meta.url), "utf8");
+  assert.match(source, /createImageBitmap/);
+  assert.match(source, /canvas\.toBlob/);
+  assert.match(source, /image\/jpeg/);
+  assert.match(source, /image\/png/);
+  assert.match(source, /image\/webp/);
   assert.doesNotMatch(source, /fetch\(|XMLHttpRequest|FormData/);
 });
