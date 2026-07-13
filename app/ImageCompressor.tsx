@@ -418,6 +418,15 @@ export function ImageCompressor() {
         </ul>
       </section>
 
+      <section className="article-link-section" aria-labelledby="article-link-title">
+        <div>
+          <span className="eyebrow">사진 용량 가이드</span>
+          <h2 id="article-link-title">휴대폰 사진을 500KB 이하로 줄여야 하나요?</h2>
+          <p>용량 제한에 맞추는 순서와 압축 후 확인할 항목을 짧게 정리했습니다.</p>
+        </div>
+        <a href="/guide/photo-500kb">500KB 사진 압축 방법 보기 <span aria-hidden="true">→</span></a>
+      </section>
+
       <footer><strong>파일핏</strong><span>사진은 서버에 저장하거나 전송하지 않습니다.</span></footer>
     </main>
   );

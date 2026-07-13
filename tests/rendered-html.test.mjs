@@ -43,6 +43,17 @@ test("publishes search engine discovery routes", async () => {
   assert.equal(sitemapResponse.status, 200);
   const sitemap = await sitemapResponse.text();
   assert.match(sitemap, /<loc>https:\/\/filefit\.kr<\/loc>/i);
+  assert.match(sitemap, /<loc>https:\/\/filefit\.kr\/guide\/photo-500kb<\/loc>/i);
+});
+
+test("publishes the 500KB photo guide", async () => {
+  const response = await render("/guide/photo-500kb");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /휴대폰 사진을 500KB 이하로 줄이는 방법/);
+  assert.match(html, /https:\/\/filefit\.kr\/guide\/photo-500kb/);
+  assert.match(html, /"@type":"HowTo"/);
+  assert.match(html, /파일핏에서 사진 용량 줄이기/);
 });
 
 test("keeps the MVP client-side and limits accepted formats", async () => {
