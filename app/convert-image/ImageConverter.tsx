@@ -7,6 +7,7 @@ const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const MAX_FILE_BYTES = 30 * 1024 * 1024;
 
 type OutputFormat = "image/jpeg" | "image/png" | "image/webp";
+type QualityMode = "saving" | "recommended" | "clear" | "custom";
 
 type ImageInfo = {
   source: CanvasImageSource;
@@ -27,6 +28,12 @@ const FORMATS: { type: OutputFormat; label: string; note: string }[] = [
   { type: "image/jpeg", label: "JPG", note: "사진·호환성" },
   { type: "image/png", label: "PNG", note: "투명 배경" },
   { type: "image/webp", label: "WEBP", note: "작은 용량" },
+];
+
+const QUALITY_PRESETS: { mode: Exclude<QualityMode, "custom">; value: number; label: string; note: string }[] = [
+  { mode: "saving", value: 75, label: "용량 절약", note: "공유용 사진" },
+  { mode: "recommended", value: 85, label: "추천", note: "대부분의 사진" },
+  { mode: "clear", value: 95, label: "선명하게", note: "화질 우선" },
 ];
 
 function formatBytes(bytes: number) {
@@ -87,7 +94,8 @@ export function ImageConverter() {
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
   const [outputType, setOutputType] = useState<OutputFormat>("image/jpeg");
-  const [quality, setQuality] = useState(92);
+  const [quality, setQuality] = useState(85);
+  const [qualityMode, setQualityMode] = useState<QualityMode>("recommended");
   const [status, setStatus] = useState<"idle" | "working" | "done" | "error">("idle");
   const [message, setMessage] = useState("");
   const [result, setResult] = useState<ConvertResult | null>(null);
@@ -148,6 +156,20 @@ export function ImageConverter() {
     setOutputType(type);
     resetResult();
   };
+
+  const chooseQuality = (mode: Exclude<QualityMode, "custom">, value: number) => {
+    setQualityMode(mode);
+    setQuality(value);
+    resetResult();
+  };
+
+  const qualityLabel = qualityMode === "saving"
+    ? "용량 절약"
+    : qualityMode === "recommended"
+      ? "추천"
+      : qualityMode === "clear"
+        ? "선명하게"
+        : `직접 조절 ${quality}%`;
 
   const runConversion = async () => {
     if (!file) {
@@ -259,11 +281,47 @@ export function ImageConverter() {
         </div>
 
         {outputType !== "image/png" && (
-          <label className="quality-control">
-            <span><strong>결과 화질</strong><b>{quality}%</b></span>
-            <input type="range" min="50" max="100" step="1" value={quality} onChange={(event) => { setQuality(Number(event.target.value)); resetResult(); }} />
-            <small>높을수록 선명하지만 파일 용량이 커질 수 있어요.</small>
-          </label>
+          <fieldset className="quality-picker">
+            <legend>결과 화질</legend>
+            <p>잘 모르겠다면 <strong>추천</strong>을 그대로 사용하세요.</p>
+            <div className="quality-presets" role="group" aria-label="결과 화질 선택">
+              {QUALITY_PRESETS.map((preset) => (
+                <button
+                  type="button"
+                  key={preset.mode}
+                  className={qualityMode === preset.mode ? "active" : ""}
+                  onClick={() => chooseQuality(preset.mode, preset.value)}
+                  aria-pressed={qualityMode === preset.mode}
+                >
+                  <strong>{preset.label}{preset.mode === "recommended" && <em>추천</em>}</strong>
+                  <span>{preset.note}</span>
+                </button>
+              ))}
+            </div>
+            <button
+              type="button"
+              className={`custom-quality-toggle ${qualityMode === "custom" ? "active" : ""}`}
+              onClick={() => { setQualityMode("custom"); resetResult(); }}
+              aria-expanded={qualityMode === "custom"}
+              aria-controls="custom-quality-control"
+            >
+              직접 조절하기 <span aria-hidden="true">{qualityMode === "custom" ? "−" : "+"}</span>
+            </button>
+            {qualityMode === "custom" && (
+              <label id="custom-quality-control" className="quality-control">
+                <span><strong>직접 선택한 화질</strong><b>{quality}%</b></span>
+                <input
+                  type="range"
+                  min="50"
+                  max="100"
+                  step="1"
+                  value={quality}
+                  onChange={(event) => { setQuality(Number(event.target.value)); resetResult(); }}
+                />
+                <small>높을수록 선명하지만 파일 용량이 커질 수 있어요.</small>
+              </label>
+            )}
+          </fieldset>
         )}
 
         <button type="button" className="primary-button" onClick={runConversion} disabled={status === "working"}>
@@ -287,7 +345,10 @@ export function ImageConverter() {
               <div><span>변환 후</span><strong>{formatLabel(outputType)} · {formatBytes(result.blob.size)}</strong></div>
             </div>
             <a className="download-button" href={result.url} download={result.filename}>변환한 사진 저장하기 <span aria-hidden="true">↓</span></a>
-            <p className="result-detail">사진 크기 {result.width.toLocaleString()} × {result.height.toLocaleString()}px 유지</p>
+            <p className="result-detail">
+              사진 크기 {result.width.toLocaleString()} × {result.height.toLocaleString()}px 유지
+              {outputType !== "image/png" && <> · {qualityLabel} 화질 {quality}%</>}
+            </p>
           </section>
         )}
       </section>

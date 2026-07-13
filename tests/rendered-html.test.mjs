@@ -120,6 +120,9 @@ test("publishes the client-side image format converter", async () => {
   assert.match(html, /사진 형식 변환/);
   assert.match(html, /type="file"/);
   assert.match(html, /href="\/guide\/png-jpg-difference"/);
+  assert.match(html, /용량 절약/);
+  assert.match(html, /잘 모르겠다면/);
+  assert.match(html, /직접 조절하기/);
 
   const source = await readFile(new URL("../app/convert-image/ImageConverter.tsx", import.meta.url), "utf8");
   assert.match(source, /createImageBitmap/);
@@ -128,6 +131,8 @@ test("publishes the client-side image format converter", async () => {
   assert.match(source, /image\/png/);
   assert.match(source, /image\/webp/);
   assert.match(source, /fillStyle = "#ffffff"/);
+  assert.match(source, /useState\(85\)/);
+  assert.match(source, /qualityMode === "custom"/);
   assert.doesNotMatch(source, /fetch\(|XMLHttpRequest|FormData/);
 });
 
