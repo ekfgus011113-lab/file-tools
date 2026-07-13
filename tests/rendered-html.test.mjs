@@ -49,6 +49,7 @@ test("publishes search engine discovery routes", async () => {
   assert.match(sitemap, /<loc>https:\/\/filefit\.kr<\/loc>/i);
   assert.match(sitemap, /<loc>https:\/\/filefit\.kr\/guide\/photo-500kb<\/loc>/i);
   assert.match(sitemap, /<loc>https:\/\/filefit\.kr\/guide\/png-jpg-difference<\/loc>/i);
+  assert.match(sitemap, /<loc>https:\/\/filefit\.kr\/guide\/resize-photo-pixels<\/loc>/i);
   assert.match(sitemap, /<loc>https:\/\/filefit\.kr\/resize-image<\/loc>/i);
   assert.match(sitemap, /<loc>https:\/\/filefit\.kr\/convert-image<\/loc>/i);
   assert.match(sitemap, /<loc>https:\/\/filefit\.kr\/batch-compress<\/loc>/i);
@@ -64,6 +65,18 @@ test("publishes the PNG and JPG format guide", async () => {
   assert.match(html, /href="\/convert-image"/);
   assert.match(html, /https:\/\/filefit\.kr\/guide\/png-jpg-difference/);
   assert.match(html, /"@type":"Article"/);
+});
+
+test("publishes the photo pixel resize guide", async () => {
+  const response = await render("/guide/resize-photo-pixels");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /사진 크기 줄이기/);
+  assert.match(html, /픽셀 크기와 파일 용량/);
+  assert.match(html, /비율 유지/);
+  assert.match(html, /href="\/resize-image"/);
+  assert.match(html, /https:\/\/filefit\.kr\/guide\/resize-photo-pixels/);
+  assert.match(html, /"@type":"HowTo"/);
 });
 
 test("publishes the 500KB photo guide", async () => {
@@ -101,6 +114,7 @@ test("publishes the client-side image resizer", async () => {
   assert.match(html, /type="file"/);
   assert.match(html, /href="\/batch-compress"/);
   assert.match(html, /파일핏 도구 메뉴/);
+  assert.match(html, /href="\/guide\/resize-photo-pixels"/);
 
   const source = await readFile(new URL("../app/resize-image/ImageResizer.tsx", import.meta.url), "utf8");
   assert.match(source, /createImageBitmap/);

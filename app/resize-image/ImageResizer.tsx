@@ -298,6 +298,15 @@ export function ImageResizer() {
         <article><span aria-hidden="true">◇</span><h3>사진이 밖으로 나가지 않아요</h3><p>업로드 없이 현재 기기의 브라우저에서 처리합니다.</p></article>
       </section>
 
+      <section className="article-link-section" aria-labelledby="resize-guide-title">
+        <div>
+          <span className="section-kicker">사진 크기 가이드</span>
+          <h2 id="resize-guide-title">픽셀 크기와 파일 용량은 무엇이 다를까요?</h2>
+          <p>사진이 찌그러지지 않게 줄이는 방법과 용도별 가로 크기 예시를 확인하세요.</p>
+        </div>
+        <a href="/guide/resize-photo-pixels">사진 크기 변경 방법 보기 <span aria-hidden="true">→</span></a>
+      </section>
+
       <footer><strong>파일핏</strong><span>사진은 서버에 저장하거나 전송하지 않습니다.</span></footer>
     </main>
   );
