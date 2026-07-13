@@ -2,13 +2,13 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-async function render() {
+async function render(path = "/", accept = "text/html") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
   const { default: worker } = await import(workerUrl.href);
 
   return worker.fetch(
-    new Request("http://localhost/", { headers: { accept: "text/html" } }),
+    new Request(`http://localhost${path}`, { headers: { accept } }),
     { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } },
     { waitUntil() {}, passThroughOnException() {} },
   );
@@ -25,7 +25,22 @@ test("renders the Korean image compression tool", async () => {
   assert.match(html, /목표 용량/);
   assert.match(html, /사진은 서버로 전송되지 않습니다/);
   assert.match(html, /type="file"/);
+  assert.match(html, /application\/ld\+json/);
+  assert.match(html, /rel="canonical"[^>]*href="https:\/\/fileddak\.ekfgus011113\.chatgpt\.site\/?"/i);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
+});
+
+test("publishes search engine discovery routes", async () => {
+  const robotsResponse = await render("/robots.txt", "text/plain");
+  assert.equal(robotsResponse.status, 200);
+  const robots = await robotsResponse.text();
+  assert.match(robots, /User-Agent: \*/i);
+  assert.match(robots, /Sitemap: https:\/\/fileddak\.ekfgus011113\.chatgpt\.site\/sitemap\.xml/i);
+
+  const sitemapResponse = await render("/sitemap.xml", "application/xml");
+  assert.equal(sitemapResponse.status, 200);
+  const sitemap = await sitemapResponse.text();
+  assert.match(sitemap, /<loc>https:\/\/fileddak\.ekfgus011113\.chatgpt\.site<\/loc>/i);
 });
 
 test("keeps the MVP client-side and limits accepted formats", async () => {
