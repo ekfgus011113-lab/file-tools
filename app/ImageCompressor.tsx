@@ -1,6 +1,7 @@
 "use client";
 
 import { ChangeEvent, DragEvent, useEffect, useMemo, useRef, useState } from "react";
+import { ToolNav } from "./ToolNav";
 
 const PRESETS = [100, 300, 500, 1024];
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -307,7 +308,7 @@ export function ImageCompressor() {
           <span className="brand-mark" aria-hidden="true">핏</span>
           <span>파일핏</span>
         </a>
-        <span className="header-note">설치 없이, 기기 안에서 안전하게</span>
+        <ToolNav current="/" />
       </header>
 
       <section className="hero" id="top">
@@ -401,6 +402,11 @@ export function ImageCompressor() {
             <p className="result-detail">결과 크기 {result.width.toLocaleString()} × {result.height.toLocaleString()}px · {extensionFor(result.blob.type || file.type).toUpperCase()}</p>
           </section>
         )}
+      </section>
+
+      <section className="role-switch-section" aria-labelledby="batch-switch-title">
+        <div><span>사진이 여러 장인가요?</span><h2 id="batch-switch-title">최대 10장을 같은 용량으로 한꺼번에 줄일 수 있어요.</h2><p>진행 상태를 한눈에 확인하고 결과는 ZIP 파일 하나로 저장하세요.</p></div>
+        <a href="/batch-compress">여러 사진 일괄 압축 <span aria-hidden="true">→</span></a>
       </section>
 
       <section className="trust-section" aria-label="서비스 특징">

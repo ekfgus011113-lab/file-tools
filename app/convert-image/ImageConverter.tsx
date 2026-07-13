@@ -1,6 +1,7 @@
 "use client";
 
 import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ToolNav } from "../ToolNav";
 
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const MAX_FILE_BYTES = 30 * 1024 * 1024;
@@ -200,7 +201,7 @@ export function ImageConverter() {
           <span className="brand-mark" aria-hidden="true">핏</span>
           <span>파일핏</span>
         </a>
-        <a className="header-tool-link" href="/resize-image">사진 크기 변경</a>
+        <ToolNav current="/convert-image" />
       </header>
 
       <section className="hero resize-hero">

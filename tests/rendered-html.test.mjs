@@ -27,6 +27,9 @@ test("renders the Korean image compression tool", async () => {
   assert.match(html, /목표 용량/);
   assert.match(html, /사진은 서버로 전송되지 않습니다/);
   assert.match(html, /type="file"/);
+  assert.match(html, /href="\/batch-compress"/);
+  assert.match(html, /여러 사진 일괄 압축/);
+  assert.match(html, /파일핏 도구 메뉴/);
   assert.match(html, /application\/ld\+json/);
   assert.match(html, /rel="canonical"[^>]*href="https:\/\/filefit\.kr\/?"/i);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
@@ -79,6 +82,8 @@ test("publishes the client-side image resizer", async () => {
   assert.match(html, /사진 가로·세로/);
   assert.match(html, /비율 유지/);
   assert.match(html, /type="file"/);
+  assert.match(html, /href="\/batch-compress"/);
+  assert.match(html, /파일핏 도구 메뉴/);
 
   const source = await readFile(new URL("../app/resize-image/ImageResizer.tsx", import.meta.url), "utf8");
   assert.match(source, /createImageBitmap/);
@@ -117,6 +122,9 @@ test("publishes the client-side batch image compressor", async () => {
   assert.match(html, /한꺼번에 용량 줄이기/);
   assert.match(html, /type="file"/);
   assert.match(html, /multiple/);
+  assert.match(html, /href="\/"/);
+  assert.match(html, /사진 한 장 빠른 압축/);
+  assert.match(html, /aria-current="page"/);
 
   const source = await readFile(new URL("../app/batch-compress/BatchCompressor.tsx", import.meta.url), "utf8");
   assert.match(source, /MAX_FILES = 10/);

@@ -1,6 +1,7 @@
 "use client";
 
 import { ChangeEvent, DragEvent, useEffect, useMemo, useRef, useState } from "react";
+import { ToolNav } from "../ToolNav";
 
 const PRESETS = [100, 300, 500, 1024];
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -349,7 +350,7 @@ export function BatchCompressor() {
     <main>
       <header className="site-header">
         <a className="brand" href="/" aria-label="파일핏 처음으로"><span className="brand-mark" aria-hidden="true">핏</span><span>파일핏</span></a>
-        <a className="header-tool-link" href="/convert-image">사진 형식 변환</a>
+        <ToolNav current="/batch-compress" />
       </header>
 
       <section className="hero resize-hero">
@@ -399,6 +400,11 @@ export function BatchCompressor() {
         <button type="button" className="primary-button" onClick={runBatch} disabled={running}>{running ? <><span className="spinner" aria-hidden="true" /> {completed}/{items.length}장 압축 중</> : "여러 사진 압축하기"}</button>
         {message && <div className="status-message" role="status"><span aria-hidden="true">{zipUrl ? "✓" : "…"}</span>{message}</div>}
         {zipUrl && <section className="result-card batch-result"><div className="result-top"><div><span className="result-label">일괄 압축 완료</span><h2>{completed}장</h2></div></div><a className="download-button" href={zipUrl} download="filefit-compressed.zip">압축한 사진 모두 저장하기 <span aria-hidden="true">↓</span></a><p className="result-detail">ZIP 파일 하나로 저장됩니다.</p></section>}
+      </section>
+
+      <section className="role-switch-section single-switch" aria-labelledby="single-switch-title">
+        <div><span>사진이 한 장뿐인가요?</span><h2 id="single-switch-title">목록과 ZIP 없이 더 간단하게 압축하세요.</h2><p>사진 한 장을 100KB, 300KB, 500KB 또는 원하는 용량 이하로 빠르게 줄입니다.</p></div>
+        <a href="/">사진 한 장 빠른 압축 <span aria-hidden="true">→</span></a>
       </section>
 
       <section className="trust-section" aria-label="일괄 압축 특징">
