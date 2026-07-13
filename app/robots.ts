@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const siteUrl = "https://fileddak.ekfgus011113.chatgpt.site";
+const siteUrl = "https://filefit.kr";
 
 export default function robots(): MetadataRoute.Robots {
   return {

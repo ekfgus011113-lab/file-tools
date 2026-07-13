@@ -5,7 +5,7 @@ const structuredData = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   name: "파일핏",
-  url: "https://fileddak.ekfgus011113.chatgpt.site/",
+  url: "https://filefit.kr/",
   applicationCategory: "UtilitiesApplication",
   operatingSystem: "Any",
   browserRequirements: "JavaScript enabled",

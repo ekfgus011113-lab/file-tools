@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-const siteUrl = "https://fileddak.ekfgus011113.chatgpt.site";
+const siteUrl = "https://filefit.kr";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -28,11 +28,18 @@ export const metadata: Metadata = {
     siteName: "파일핏",
     title: "파일핏 | 사진 용량 줄이기",
     description: "설치와 가입 없이 사진을 원하는 용량 이하로 줄이세요. 사진은 기기 안에서만 처리됩니다.",
+    images: [
+      {
+        url: "/og.png",
+        alt: "파일핏 - 사진 용량을 원하는 크기 이하로",
+      },
+    ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "파일핏 | 사진 용량 줄이기",
     description: "사진을 100KB, 300KB, 500KB, 1MB 이하로 간편하게 줄이는 무료 도구",
+    images: ["/og.png"],
   },
   robots: { index: true, follow: true },
 };

@@ -28,7 +28,7 @@ test("renders the Korean image compression tool", async () => {
   assert.match(html, /사진은 서버로 전송되지 않습니다/);
   assert.match(html, /type="file"/);
   assert.match(html, /application\/ld\+json/);
-  assert.match(html, /rel="canonical"[^>]*href="https:\/\/fileddak\.ekfgus011113\.chatgpt\.site\/?"/i);
+  assert.match(html, /rel="canonical"[^>]*href="https:\/\/filefit\.kr\/?"/i);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
 });
 
@@ -37,12 +37,12 @@ test("publishes search engine discovery routes", async () => {
   assert.equal(robotsResponse.status, 200);
   const robots = await robotsResponse.text();
   assert.match(robots, /User-Agent: \*/i);
-  assert.match(robots, /Sitemap: https:\/\/fileddak\.ekfgus011113\.chatgpt\.site\/sitemap\.xml/i);
+  assert.match(robots, /Sitemap: https:\/\/filefit\.kr\/sitemap\.xml/i);
 
   const sitemapResponse = await render("/sitemap.xml", "application/xml");
   assert.equal(sitemapResponse.status, 200);
   const sitemap = await sitemapResponse.text();
-  assert.match(sitemap, /<loc>https:\/\/fileddak\.ekfgus011113\.chatgpt\.site<\/loc>/i);
+  assert.match(sitemap, /<loc>https:\/\/filefit\.kr<\/loc>/i);
 });
 
 test("keeps the MVP client-side and limits accepted formats", async () => {
