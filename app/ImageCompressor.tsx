@@ -430,10 +430,13 @@ export function ImageCompressor() {
       <section className="more-tools-section" aria-labelledby="more-tools-title">
         <div>
           <span className="eyebrow">파일핏 도구</span>
-          <h2 id="more-tools-title">사진 크기도 원하는 픽셀로 바꿔보세요.</h2>
-          <p>가로·세로 비율을 유지하거나 필요한 크기를 직접 입력할 수 있습니다.</p>
+          <h2 id="more-tools-title">사진 작업을 설치 없이 이어가세요.</h2>
+          <p>픽셀 크기를 조절하거나 JPG·PNG·WEBP 형식으로 바꿀 수 있습니다.</p>
         </div>
-        <a href="/resize-image"><span aria-hidden="true">↔</span><strong>사진 가로·세로 크기 변경</strong><small>픽셀 크기 조절하기 →</small></a>
+        <div className="tool-link-grid">
+          <a href="/resize-image"><span aria-hidden="true">↔</span><strong>사진 크기 변경</strong><small>픽셀 조절하기 →</small></a>
+          <a href="/convert-image"><span aria-hidden="true">⇄</span><strong>사진 형식 변환</strong><small>JPG·PNG·WEBP →</small></a>
+        </div>
       </section>
 
       <footer><strong>파일핏</strong><span>사진은 서버에 저장하거나 전송하지 않습니다.</span></footer>

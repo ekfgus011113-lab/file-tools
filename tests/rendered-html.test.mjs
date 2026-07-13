@@ -45,6 +45,7 @@ test("publishes search engine discovery routes", async () => {
   assert.match(sitemap, /<loc>https:\/\/filefit\.kr<\/loc>/i);
   assert.match(sitemap, /<loc>https:\/\/filefit\.kr\/guide\/photo-500kb<\/loc>/i);
   assert.match(sitemap, /<loc>https:\/\/filefit\.kr\/resize-image<\/loc>/i);
+  assert.match(sitemap, /<loc>https:\/\/filefit\.kr\/convert-image<\/loc>/i);
 });
 
 test("publishes the 500KB photo guide", async () => {
@@ -84,5 +85,24 @@ test("publishes the client-side image resizer", async () => {
   assert.match(source, /image\/jpeg/);
   assert.match(source, /image\/png/);
   assert.match(source, /image\/webp/);
+  assert.doesNotMatch(source, /fetch\(|XMLHttpRequest|FormData/);
+});
+
+test("publishes the client-side image format converter", async () => {
+  const response = await render("/convert-image");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /JPG PNG WEBP 변환 - 사진 형식 바꾸기 \| 파일핏/);
+  assert.match(html, /JPG·PNG·WEBP/);
+  assert.match(html, /사진 형식 변환/);
+  assert.match(html, /type="file"/);
+
+  const source = await readFile(new URL("../app/convert-image/ImageConverter.tsx", import.meta.url), "utf8");
+  assert.match(source, /createImageBitmap/);
+  assert.match(source, /canvas\.toBlob/);
+  assert.match(source, /image\/jpeg/);
+  assert.match(source, /image\/png/);
+  assert.match(source, /image\/webp/);
+  assert.match(source, /fillStyle = "#ffffff"/);
   assert.doesNotMatch(source, /fetch\(|XMLHttpRequest|FormData/);
 });
