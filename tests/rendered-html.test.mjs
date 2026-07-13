@@ -21,6 +21,8 @@ test("renders the Korean image compression tool", async () => {
 
   const html = await response.text();
   assert.match(html, /<html[^>]*lang="ko"/i);
+  assert.match(html, /<title>사진 용량 줄이기 \| 파일딱<\/title>/i);
+  assert.doesNotMatch(html, /파일딱 \| 파일딱/);
   assert.match(html, /사진 용량을/);
   assert.match(html, /목표 용량/);
   assert.match(html, /사진은 서버로 전송되지 않습니다/);
