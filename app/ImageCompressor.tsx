@@ -436,6 +436,7 @@ export function ImageCompressor() {
         <div className="tool-link-grid">
           <a href="/resize-image"><span aria-hidden="true">↔</span><strong>사진 크기 변경</strong><small>픽셀 조절하기 →</small></a>
           <a href="/convert-image"><span aria-hidden="true">⇄</span><strong>사진 형식 변환</strong><small>JPG·PNG·WEBP →</small></a>
+          <a href="/batch-compress"><span aria-hidden="true">＋</span><strong>여러 사진 일괄 압축</strong><small>최대 10장 한 번에 →</small></a>
         </div>
       </section>
 

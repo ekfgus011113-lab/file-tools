@@ -46,6 +46,7 @@ test("publishes search engine discovery routes", async () => {
   assert.match(sitemap, /<loc>https:\/\/filefit\.kr\/guide\/photo-500kb<\/loc>/i);
   assert.match(sitemap, /<loc>https:\/\/filefit\.kr\/resize-image<\/loc>/i);
   assert.match(sitemap, /<loc>https:\/\/filefit\.kr\/convert-image<\/loc>/i);
+  assert.match(sitemap, /<loc>https:\/\/filefit\.kr\/batch-compress<\/loc>/i);
 });
 
 test("publishes the 500KB photo guide", async () => {
@@ -104,5 +105,24 @@ test("publishes the client-side image format converter", async () => {
   assert.match(source, /image\/png/);
   assert.match(source, /image\/webp/);
   assert.match(source, /fillStyle = "#ffffff"/);
+  assert.doesNotMatch(source, /fetch\(|XMLHttpRequest|FormData/);
+});
+
+test("publishes the client-side batch image compressor", async () => {
+  const response = await render("/batch-compress");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /여러 사진 용량 한꺼번에 줄이기 - 일괄 압축 \| 파일핏/);
+  assert.match(html, /여러 사진을/);
+  assert.match(html, /한꺼번에 용량 줄이기/);
+  assert.match(html, /type="file"/);
+  assert.match(html, /multiple/);
+
+  const source = await readFile(new URL("../app/batch-compress/BatchCompressor.tsx", import.meta.url), "utf8");
+  assert.match(source, /MAX_FILES = 10/);
+  assert.match(source, /createImageBitmap/);
+  assert.match(source, /canvas\.toBlob/);
+  assert.match(source, /createZip/);
+  assert.match(source, /application\/zip/);
   assert.doesNotMatch(source, /fetch\(|XMLHttpRequest|FormData/);
 });
