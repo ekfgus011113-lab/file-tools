@@ -4,7 +4,7 @@ import { ImageCompressor } from "./ImageCompressor";
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  name: "파일딱",
+  name: "파일핏",
   url: "https://fileddak.ekfgus011113.chatgpt.site/",
   applicationCategory: "UtilitiesApplication",
   operatingSystem: "Any",

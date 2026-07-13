@@ -303,9 +303,9 @@ export function ImageCompressor() {
   return (
     <main>
       <header className="site-header">
-        <a className="brand" href="#top" aria-label="파일딱 처음으로">
-          <span className="brand-mark" aria-hidden="true">딱</span>
-          <span>파일딱</span>
+        <a className="brand" href="#top" aria-label="파일핏 처음으로">
+          <span className="brand-mark" aria-hidden="true">핏</span>
+          <span>파일핏</span>
         </a>
         <span className="header-note">설치 없이, 기기 안에서 안전하게</span>
       </header>
@@ -418,7 +418,7 @@ export function ImageCompressor() {
         </ul>
       </section>
 
-      <footer><strong>파일딱</strong><span>사진은 서버에 저장하거나 전송하지 않습니다.</span></footer>
+      <footer><strong>파일핏</strong><span>사진은 서버에 저장하거나 전송하지 않습니다.</span></footer>
     </main>
   );
 }
