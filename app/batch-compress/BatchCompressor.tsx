@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
+import { ChangeEvent, DragEvent, useEffect, useMemo, useRef, useState } from "react";
 
 const PRESETS = [100, 300, 500, 1024];
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -213,6 +213,7 @@ async function createZip(files: { name: string; blob: Blob }[]) {
 
 export function BatchCompressor() {
   const inputRef = useRef<HTMLInputElement>(null);
+  const dragDepthRef = useRef(0);
   const itemsRef = useRef<BatchItem[]>([]);
   const zipUrlRef = useRef<string | null>(null);
   const [items, setItems] = useState<BatchItem[]>([]);
@@ -220,6 +221,7 @@ export function BatchCompressor() {
   const [customTarget, setCustomTarget] = useState("500");
   const [isCustom, setIsCustom] = useState(false);
   const [running, setRunning] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const [message, setMessage] = useState("");
   const [zipUrl, setZipUrl] = useState<string | null>(null);
 
@@ -265,6 +267,32 @@ export function BatchCompressor() {
   const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
     addFiles(event.target.files);
     event.target.value = "";
+  };
+
+  const handleDragEnter = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    if (running || items.length >= MAX_FILES) return;
+    dragDepthRef.current += 1;
+    setIsDragging(true);
+  };
+
+  const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = running || items.length >= MAX_FILES ? "none" : "copy";
+  };
+
+  const handleDragLeave = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    dragDepthRef.current = Math.max(0, dragDepthRef.current - 1);
+    if (dragDepthRef.current === 0) setIsDragging(false);
+  };
+
+  const handleDrop = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    dragDepthRef.current = 0;
+    setIsDragging(false);
+    if (running || items.length >= MAX_FILES) return;
+    addFiles(event.dataTransfer.files);
   };
 
   const removeItem = (id: string) => {
@@ -332,10 +360,16 @@ export function BatchCompressor() {
 
       <section className="tool-shell batch-shell" aria-labelledby="batch-tool-title">
         <div className="step-heading"><span>1</span><div><h2 id="batch-tool-title">사진 여러 장 선택</h2><p>최대 10장 · 장당 30MB · 전체 100MB</p></div></div>
-        <div className={`drop-zone batch-drop ${items.length ? "has-file" : ""}`}>
+        <div
+          className={`drop-zone batch-drop ${items.length ? "has-file" : ""} ${isDragging ? "dragging" : ""}`}
+          onDragEnter={handleDragEnter}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+        >
           <input ref={inputRef} type="file" multiple accept="image/jpeg,image/png,image/webp" onChange={handleInput} hidden />
           <button type="button" className="drop-button" onClick={() => inputRef.current?.click()} disabled={items.length >= MAX_FILES || running}>
-            <span className="upload-icon" aria-hidden="true">＋</span><strong>{items.length ? "사진 더 추가하기" : "사진을 여러 장 선택하세요"}</strong><span>JPG, PNG, WEBP</span>
+            <span className="upload-icon" aria-hidden="true">＋</span><strong>{isDragging ? "여기에 사진을 놓으세요" : items.length ? "사진 더 추가하기" : "사진을 여러 장 선택하세요"}</strong><span>{isDragging ? "놓으면 목록에 바로 추가됩니다" : "누르거나 여기로 끌어다 놓기 · JPG, PNG, WEBP"}</span>
           </button>
         </div>
 

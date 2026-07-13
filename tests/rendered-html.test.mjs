@@ -124,5 +124,10 @@ test("publishes the client-side batch image compressor", async () => {
   assert.match(source, /canvas\.toBlob/);
   assert.match(source, /createZip/);
   assert.match(source, /application\/zip/);
+  assert.match(source, /onDragEnter/);
+  assert.match(source, /onDragOver/);
+  assert.match(source, /onDragLeave/);
+  assert.match(source, /onDrop/);
+  assert.match(source, /dataTransfer\.files/);
   assert.doesNotMatch(source, /fetch\(|XMLHttpRequest|FormData/);
 });
